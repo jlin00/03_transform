@@ -70,7 +70,7 @@ void parse_file ( char * filename,
     line[strlen(line)-1]='\0';
     printf(":%s:\n",line);
     if (strcmp(line, "line") == 0){
-      
+
     }
     else if (strcmp(line, "ident") == 0){
 
@@ -93,7 +93,7 @@ void parse_file ( char * filename,
     else if (strcmp(line, "save") == 0){
 
     }
-    else{ //quit
+    else if (strcmp(line, "quit") == 0){
 
     }
   }
