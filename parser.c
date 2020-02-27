@@ -68,21 +68,51 @@ void parse_file ( char * filename,
 
   while ( fgets(line, 255, f) != NULL ) {
     line[strlen(line)-1]='\0';
-    printf(":%s:\n",line);
+    //printf(":%s:\n",line);
     if (strcmp(line, "line") == 0){
-
+      fgets(line, 255, f); //args
+      line[strlen(line)-1]='\0';
+      double x0, y0, z0, x1, y1, z1;
+      sscanf(line, "%lf %lf %lf %lf %lf %lf", &x0, &y0, &z0, &x1, &y1, &z1);
+      add_edge(edges, x0, y0, z0, x1, y1, z1);
     }
     else if (strcmp(line, "ident") == 0){
-
+      ident(transform);
     }
     else if (strcmp(line, "scale") == 0){
-
+      fgets(line, 255, f); //args
+      line[strlen(line)-1]='\0';
+      double sx, sy, sz;
+      sscanf(line, "%lf %lf %lf", &sx, &sy, &sz);
+      struct matrix * scale = make_scale(sx, sy, sz);
+      matrix_mult(transform, scale);
     }
     else if (strcmp(line, "translate") == 0){
-
+      fgets(line, 255, f); //args
+      line[strlen(line)-1]='\0';
+      double tx, ty, tz;
+      sscanf(line, "%lf %lf %lf", &tx, &ty, &tz);
+      struct matrix * translate = make_scale(tx, ty, tz);
+      matrix_mult(transform, translate);
     }
     else if (strcmp(line, "rotate") == 0){
-
+      fgets(line, 255, f); //args
+      line[strlen(line)-1]='\0';
+      char axis;
+      double theta;
+      sscanf(line, "%c %lf", &axis, &theta);
+      theta *= M_PI / 180.0;
+      struct matrix * rotate;
+      if (axis == 'x'){
+        rotate = make_rotX(theta);
+      }
+      else if (axis == 'y'){
+        rotate = make_rotY(theta);
+      }
+      else{
+        rotate = make_rotZ(theta);
+      }
+      matrix_mult(transform, rotate);
     }
     else if (strcmp(line, "apply") == 0){
 
@@ -91,7 +121,8 @@ void parse_file ( char * filename,
 
     }
     else if (strcmp(line, "save") == 0){
-
+      fgets(line, 255, f); //args
+      line[strlen(line)-1]='\0';
     }
     else if (strcmp(line, "quit") == 0){
 
